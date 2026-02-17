@@ -1,0 +1,78 @@
+Bu kod projenin "Motor" kısmıdır. İki ana sınıfa (Class) ayrılmıştır: GameState (Kurallar) ve AI_Agent (Zeka).
+
+1. Kütüphaneler
+random: Oyun başında 15-20 arası rastgele sayı üretmek için.
+
+copy: Oyun tahtasının kopyasını oluşturmak için. AI geleceği düşünürken gerçek oyunu bozmamak için kopyalar üzerinde çalışır.
+
+2. Sınıf: GameState (Oyun Durumu)
+Oyunun o anki fotoğrafıdır: Sayılar kaç? Puanlar ne? Sıra kimde?
+
+__init__ (Kurucu Fonksiyon):
+
+Oyun başladığında çalışır. Rastgele sayı listesini oluşturur ve puanları sıfırlar.
+
+clone (Kopyalama):
+
+Görevi: O anki durumun birebir kopyasını oluşturur.
+
+Neden Önemli? Minimax algoritması "Acaba 4'ü alırsam ne olur?" diye denerken gerçek oyundaki 4'ü silmemelidir. Bu yüzden clone ile oluşturulan kopya üzerinde deneme yapar.
+
+get_legal_moves (Geçerli Hamleleri Bul):
+
+Listeye bakar ve kurallara göre yapılabilecek hamleleri listeler:
+
+Her sayıyı "Alabilirsin" (take).
+
+Sayı 2 ise "Bölebilirsin" (split2).
+
+Sayı 4 ise "Bölebilirsin" (split4).
+
+apply_move (Hamleyi Uygula):
+
+Seçilen hamleyi gerçekleştirir:
+
+Take: Sayıyı siler, oyuncuya puan yazar.
+
+Split2: 2'yi siler, iki tane 1 ekler. (Puan yok).
+
+Split4: 4'ü siler, iki tane 2 ekler. (+1 Puan).
+
+Son olarak sırayı diğer oyuncuya geçirir.
+
+is_game_over: Liste boş mu diye bakar.
+
+get_winner: Puanları karşılaştırıp kazananı (1 veya 2) söyler.
+
+3. Sınıf: AI_Agent (Yapay Zeka)
+Hocanın istediği Minimax algoritmasının bulunduğu yer.
+
+__init__:
+
+AI'ın kim olduğunu (Player 2) ve kaç hamle sonrasını göreceğini (depth_limit) ayarlar. Biz 4 hamle dedik çünkü daha fazlası oyunu yavaşlatır.
+
+get_best_move (En İyi Hamleyi Getir):
+
+Görevi: Arayüz (GUI) bu fonksiyonu çağırır. "Sıra bende, ne yapayım?" der.
+
+İşleyiş: Tüm olası hamleleri tek tek minimax fonksiyonuna göndererek simüle eder ve en yüksek puanlı olanı seçer.
+
+minimax (Algoritmanın Kalbi):
+
+Görevi: Öz yinelemeli (recursive) olarak ağaç yapısında ilerler.
+
+Mantık:
+
+Eğer sıra AI'da ise (Maximizing): Kendi puanını maksimize etmeye çalışır.
+
+Eğer sıra İnsanda ise (Minimizing): İnsanın en iyi hamleyi yapacağını (yani AI'ın puanını düşüreceğini) varsayar.
+
+Alpha-Beta Pruning: Eğer bir dalın kötü olduğu anlaşılırsa, o dalın geri kalanını hesaplamayı keser (zaman kazancı).
+
+heuristic_evaluation (Sezgisel Değerlendirme):
+
+Savunma İçin Kritik: Oyunun sonunu göremediğimizde (derinlik sınırı yüzünden), o anki durumun ne kadar iyi olduğunu tahmin eder.
+
+Formül: (Skor Farkı * 10) + Potansiyel Değer.
+
+Potansiyel Değer Nedir? Masada '4' varsa ona ekstra puan veririz (+0.5). Çünkü '4' hem yüksek puan verir hem de bölünüp stratejik avantaj sağlar.
