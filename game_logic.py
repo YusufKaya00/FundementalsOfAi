@@ -56,6 +56,46 @@ class GameState:
                 moves.append(('split4', i, 4))
         return moves
 
+    def get_game_tree(self):
+        """
+        Generates the full game tree starting from the current state.
+        WARNING: This is computationally expensive for large boards.
+        Returns a nested dictionary representing the tree.
+        """
+
+        def build_tree(state):
+            # Create representation of current node
+            node = {
+                "state": {
+                    "numbers": state.numbers.copy(),
+                    "scores": state.scores.copy(),
+                    "current_player": state.current_player
+                },
+                "children": []
+            }
+
+            # If game over → return leaf node
+            if state.is_game_over():
+                node["winner"] = state.get_winner()
+                return node
+
+            # Generate children for all legal moves
+            for move in state.get_legal_moves():
+                next_state = state.clone()
+                next_state.apply_move(move)
+
+                child_node = {
+                    "move": move,
+                    "result": build_tree(next_state)
+                }
+
+                node["children"].append(child_node)
+
+            return node
+
+        return build_tree(self)
+
+
     def apply_move(self, move):
         """
         Applies a chosen move to the game state.

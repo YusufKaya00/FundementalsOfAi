@@ -38,7 +38,7 @@ def play_console_game():
         try:
             length_str = input("Enter string length (15-20): ")
             length = int(length_str)
-            if 15 <= length <= 20:
+            if 1 <= length <= 20:
                 break
             print("Please enter a number between 15 and 20.")
         except ValueError:
@@ -48,6 +48,9 @@ def play_console_game():
     ai = AI_Agent(player_id=2, depth_limit=4) # Depth can be adjusted
 
     print(f"Game Started! Initial String Length: {length}")
+
+    # tree = game.get_game_tree()
+    # print(tree)
 
     while not game.is_game_over():
         print_game_state(game)
