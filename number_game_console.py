@@ -33,24 +33,32 @@ def get_human_move(game_state):
             print("Please enter a valid number.")
 
 def play_console_game():
+    length = 0
+    algo_type = 0
+    player_id = 0
     print("Welcome to the Number String Game!")
     while True:
         try:
             length_str = input("Enter string length (15-20): ")
             length = int(length_str)
-            if 1 <= length <= 20:
+            algo_type_inp = input(
+                "Enter what kind of algorithm you want your AI opponent to use (Minimax[0] or AlphaBeta[1]): ")
+            algo_type = int(algo_type_inp)
+            player_id_inp = input("Enter who starts the game: 2 - You, 1 - AI: ")
+            player_id = int(player_id_inp)
+            if algo_type in [0, 1] and 1 <= length <= 20 and player_id in [1, 2]:
                 break
-            print("Please enter a number between 15 and 20.")
+            print("Please enter valid inputs.")
         except ValueError:
             print("Invalid input.")
 
     game = GameState(length=length)
-    ai = AI_Agent(player_id=2, depth_limit=4) # Depth can be adjusted
+    ai = AI_Agent(player_id=player_id, algo_type=algo_type, depth_limit=4) # Depth can be adjusted
 
     print(f"Game Started! Initial String Length: {length}")
 
-    # tree = game.get_game_tree()
-    # print(tree)
+    tree = game.get_game_tree()
+    print(tree)
 
     while not game.is_game_over():
         print_game_state(game)

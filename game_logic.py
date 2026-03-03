@@ -150,9 +150,10 @@ class AI_Agent:
     """
     AI Agent that uses Minimax with Alpha-Beta Pruning.
     """
-    def __init__(self, player_id, depth_limit=4):
+    def __init__(self, player_id, algo_type=0, depth_limit=4):
         self.player_id = player_id
         self.depth_limit = depth_limit
+        self.algo_type = algo_type
 
     def get_best_move(self, game_state):
         """
@@ -175,45 +176,171 @@ class AI_Agent:
             
             # Call Minimax for the next level (minimizing step)
             # We pass False because after AI moves, it's Human's turn (Minimizer)
-            val = self.minimax(next_state, self.depth_limit - 1, -float('inf'), float('inf'), False)
+            if self.algo_type == 0:
+                best_move = self.get_best_move_minimax_tree(next_state)
+            elif self.algo_type == 1:
+                best_move = self.get_best_move_alphabeta_tree(next_state)
             
-            if val > best_val:
-                best_val = val
-                best_move = move
+
                 
         return best_move
 
-    def minimax(self, state, depth, alpha, beta, is_maximizing):
+    # =========================================================
+    # PURE MINIMAX USING EXPLICIT GAME TREE
+    # =========================================================
+
+    def get_best_move_minimax_tree(self, game_state):
         """
-        Recursive Minimax function with Alpha-Beta Pruning.
+        Minimax that operates on the explicit game tree.
         """
-        
-        # Base case: Game over or depth limit reached
+
+        tree = game_state.get_game_tree()
+
+        best_value = -float('inf')
+        best_move = None
+
+        for child in tree["children"]:
+            value = self.minimax_tree(
+                state=game_state,
+                node=child["result"],
+                depth=self.depth_limit - 1,
+                is_maximizing=False
+            )
+
+            if value > best_value:
+                best_value = value
+                best_move = child["move"]
+
+        return best_move
+
+    def minimax_tree(self, state, node, depth, is_maximizing):
+        """
+        PURE Minimax over the prebuilt game tree.
+        """
+
+        # 🛑 Terminal node
         if state.is_game_over() or depth == 0:
             return self.heuristic_evaluation(state)
-        
+
+        children = node["children"]
+
+        # MAX node (AI)
         if is_maximizing:
-            max_eval = -float('inf')
-            for move in state.get_legal_moves():
-                next_state = state.clone()
-                next_state.apply_move(move)
-                score = self.minimax(next_state, depth - 1, alpha, beta, False)
-                max_eval = max(max_eval, score)
-                alpha = max(alpha, score)
-                if beta <= alpha:
-                    break # Beta cutoff
-            return max_eval
+            best_val = -float('inf')
+            for child in children:
+                value = self.minimax_tree(
+                    state,
+                    child["result"],
+                    depth - 1,
+                    False
+                )
+                best_val = max(best_val, value)
+
+            return best_val
+
+        # MIN node (Human)
         else:
-            min_eval = float('inf')
-            for move in state.get_legal_moves():
-                next_state = state.clone()
-                next_state.apply_move(move)
-                score = self.minimax(next_state, depth - 1, alpha, beta, True)
-                min_eval = min(min_eval, score)
-                beta = min(beta, score)
+            best_val = float('inf')
+            for child in children:
+                value = self.minimax_tree(
+                    state,
+                    child["result"],
+                    depth - 1,
+                    True
+                )
+                best_val = min(best_val, value)
+
+            return best_val
+
+    # =========================================================
+    # ALPHA-BETA USING EXPLICIT GAME TREE
+    # =========================================================
+
+    def get_best_move_alphabeta_tree(self, game_state):
+        """
+        Alpha-Beta that operates on the explicit game tree.
+        """
+
+        tree = game_state.get_game_tree()
+
+        best_value = -float('inf')
+        best_move = None
+
+        alpha = -float('inf')
+        beta = float('inf')
+
+        for child in tree["children"]:
+            value = self.alphabeta_tree(
+                state=game_state,
+                node=child["result"],
+                depth=self.depth_limit - 1,
+                alpha=alpha,
+                beta=beta,
+                is_maximizing=False
+            )
+
+            if value > best_value:
+                best_value = value
+                best_move = child["move"]
+
+            alpha = max(alpha, best_value)
+
+        return best_move
+
+    def alphabeta_tree(self, state, node, depth, alpha, beta, is_maximizing):
+        """
+        Alpha-Beta that traverses the PREBUILT game tree.
+        """
+
+        # 🛑 Terminal node
+        if state.is_game_over() or depth == 0:
+            return self.heuristic_evaluation(state)
+
+        children = node["children"]
+
+        # MAX node (AI)
+        if is_maximizing:
+            value = -float('inf')
+            for child in children:
+                value = max(
+                    value,
+                    self.alphabeta_tree(
+                        state,
+                        child["result"],
+                        depth - 1,
+                        alpha,
+                        beta,
+                        False
+                    )
+                )
+
+                alpha = max(alpha, value)
                 if beta <= alpha:
-                    break # Alpha cutoff
-            return min_eval
+                    break  # ✂️ beta cutoff
+
+            return value
+
+        # MIN node (Human)
+        else:
+            value = float('inf')
+            for child in children:
+                value = min(
+                    value,
+                    self.alphabeta_tree(
+                        state,
+                        child["result"],
+                        depth - 1,
+                        alpha,
+                        beta,
+                        True
+                    )
+                )
+
+                beta = min(beta, value)
+                if beta <= alpha:
+                    break  # ✂️ alpha cutoff
+
+            return value
 
     def heuristic_evaluation(self, state):
         """
@@ -248,9 +375,9 @@ class AI_Agent:
 
 # Simple test block for debugging without GUI
 if __name__ == "__main__":
-    game = GameState(length=5)
+    game = GameState(length=2)
     print(f"Initial Board: {game.numbers}")
-    ai = AI_Agent(player_id=2, depth_limit=3)
+    ai = AI_Agent(player_id=2, depth_limit=3, algo_type="AlphaBeta")
     
     print("Testing Moves generation:")
     print(game.get_legal_moves())
