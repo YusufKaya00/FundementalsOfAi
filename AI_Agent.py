@@ -1,5 +1,5 @@
 import time
-from game_logic import GameState
+from Game_State import GameState
 
 
 # algo_type: 0 for minimax, 1 for alpha-beta pruning
@@ -44,12 +44,7 @@ class AI_Agent:
 
     def get_best_move_minimax_tree(self, game_state):
 
-        # ‼️ get_game_tree() in game_logic.py currently builds the full tree
-        # with no depth limit, which will be very slow on boards of 15-20 numbers.
-        # Update get_game_tree() to accept a depth parameter so the tree is only
-        # expanded to self.depth_limit levels.
-
-        tree = game_state.get_game_tree()
+        tree = game_state.get_game_tree(self.depth_limit)
 
         best_value = -float("inf")
         best_move = None
@@ -92,12 +87,7 @@ class AI_Agent:
 
     def get_best_move_alphabeta_tree(self, game_state):
 
-        # ‼️ get_game_tree() in game_logic.py currently builds the full tree
-        # with no depth limit, which will be very slow on boards of 15-20 numbers.
-        # Update get_game_tree() to accept a depth parameter so the tree is only
-        # expanded to self.depth_limit levels.
-
-        tree = game_state.get_game_tree()
+        tree = game_state.get_game_tree(self.depth_limit)
 
         best_value = -float("inf")
         best_move = None
@@ -179,7 +169,6 @@ class AI_Agent:
 
 # Keeping the test block for debugging without GUI just in case to confirm logic works as expected.
 # In the final version, we can comment it out
-# Note to Self: Depth limit is causing huge delays, so wait for game_logic to be updated and check again
 if __name__ == "__main__":
     game = GameState(length=5)
     print(f"Initial Board: {game.numbers}")
