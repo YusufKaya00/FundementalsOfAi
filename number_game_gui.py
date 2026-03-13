@@ -1,6 +1,7 @@
-import tkinter as tk
+import _tkinter as tk
 from tkinter import simpledialog, messagebox, Menu
-from game_logic import GameState, AI_Agent
+import Game_State as gs
+import AI_Agent as AI
 
 # ============================================================
 # COLOR PALETTE & STYLE CONSTANTS
@@ -196,8 +197,8 @@ class NumberGameGUI:
                 self.root.destroy()
             return
 
-        self.game_state = GameState(length=length)
-        self.ai_agent = AI_Agent(player_id=2, depth_limit=4)
+        self.game_state = gs.GameState(length=length)
+        self.ai_agent = AI.AI_Agent(player_id=2, depth_limit=4)
         self.refresh_ui()
 
     def refresh_ui(self):

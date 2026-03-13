@@ -1,4 +1,5 @@
-from game_logic import GameState, AI_Agent
+import Game_State as gs
+import AI_Agent as AI
 import time
 
 def print_game_state(game_state):
@@ -52,13 +53,10 @@ def play_console_game():
         except ValueError:
             print("Invalid input.")
 
-    game = GameState(length=length)
-    ai = AI_Agent(player_id=player_id, algo_type=algo_type, depth_limit=4) # Depth can be adjusted
+    game = gs.GameState(length=length)
+    ai = AI.AI_Agent(player_id=player_id, algo_type=algo_type, depth_limit=4) # Depth can be adjusted
 
     print(f"Game Started! Initial String Length: {length}")
-
-    tree = game.get_game_tree()
-    print(tree)
 
     while not game.is_game_over():
         print_game_state(game)
