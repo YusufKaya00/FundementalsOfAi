@@ -1,7 +1,14 @@
+# AI assistance information:
+# Prompt used: Fix the imports in number_game_gui.py so that it works with the
+# updated Game_State and AI_Agent modules. Ensure compatibility with the current
+# project structure and avoid import errors.
+# Model used: ChatGPT (GPT-5.3)
+
 import tkinter as tk
 from tkinter import simpledialog, messagebox, Menu
 import Game_State as gs
 import AI_Agent as AI
+
 # updated imports to match Game_State and AI_Agent after recent changes
 # ============================================================
 # COLOR PALETTE & STYLE CONSTANTS
