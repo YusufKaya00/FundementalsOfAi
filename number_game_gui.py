@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import simpledialog, messagebox, Menu
 import Game_State as gs
 import AI_Agent as AI
-
+# updated imports to match Game_State and AI_Agent after recent changes
 # ============================================================
 # COLOR PALETTE & STYLE CONSTANTS
 # A modern dark theme with accent colors for a polished look.
