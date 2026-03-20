@@ -170,7 +170,7 @@ class AI_Agent:
 # Keeping the test block for debugging without GUI just in case to confirm logic works as expected.
 # In the final version, we can comment it out
 if __name__ == "__main__":
-    game = GameState(length=5)
+    game = GameState(length=5, current_player=1)
     print(f"Initial Board: {game.numbers}")
     ai = AI_Agent(player_id=2, depth_limit=3, algo_type=1)
 
