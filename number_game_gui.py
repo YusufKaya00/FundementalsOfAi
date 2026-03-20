@@ -205,7 +205,7 @@ class NumberGameGUI:
             return
         player_id = simpledialog.askinteger(
             "Who starts the game",
-            "Enter who starts the game (2 - You, 1 - AI):",
+            "Enter who starts the game (1 - You, 2 - AI):",
             minvalue=1, maxvalue=2, parent=self.root,
         )
         if player_id is None:
@@ -221,8 +221,8 @@ class NumberGameGUI:
             if self.game_state is None:
                 self.root.destroy()
             return
-        self.game_state = gs.GameState(length=length)
-        self.ai_agent = AI.AI_Agent(player_id=player_id, algo_type=algo_type, depth_limit=4)
+        self.game_state = gs.GameState(length=length, current_player=player_id)
+        self.ai_agent = AI.AI_Agent(player_id=2, algo_type=algo_type, depth_limit=4)
         self.refresh_ui()
 
     def refresh_ui(self):

@@ -2,7 +2,7 @@ import random
 import copy
 
 class GameState:
-    def __init__(self, length=None, numbers=None):
+    def __init__(self, current_player, length=None, numbers=None):
         if numbers is not None:
             self.numbers = numbers
         else:
@@ -11,11 +11,11 @@ class GameState:
             self.numbers = [random.randint(1, 4) for i in range(length)]
 
         self.scores = {1: 0, 2: 0}
-        self.current_player = 1
+        self.current_player = current_player
         self.history = []
 
     def clone(self):
-        new_state = GameState(numbers=copy.deepcopy(self.numbers))
+        new_state = GameState(numbers=copy.deepcopy(self.numbers), current_player=copy.deepcopy(self.current_player))
         new_state.scores = copy.deepcopy(self.scores)
         new_state.current_player = self.current_player
         new_state.history = copy.deepcopy(self.history)

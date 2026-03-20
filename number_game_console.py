@@ -45,7 +45,7 @@ def play_console_game():
             algo_type_inp = input(
                 "Enter what kind of algorithm you want your AI opponent to use (Minimax[0] or AlphaBeta[1]): ")
             algo_type = int(algo_type_inp)
-            player_id_inp = input("Enter who starts the game: 2 - You, 1 - AI: ")
+            player_id_inp = input("Enter who starts the game: 1 - You, 2 - AI: ")
             player_id = int(player_id_inp)
             if algo_type in [0, 1] and 1 <= length <= 20 and player_id in [1, 2]:
                 break
@@ -53,8 +53,8 @@ def play_console_game():
         except ValueError:
             print("Invalid input.")
 
-    game = gs.GameState(length=length)
-    ai = AI.AI_Agent(player_id=player_id, algo_type=algo_type, depth_limit=4) # Depth can be adjusted
+    game = gs.GameState(length=length, current_player=player_id)
+    ai = AI.AI_Agent(player_id=2, algo_type=algo_type, depth_limit=4) # Depth can be adjusted
 
     print(f"Game Started! Initial String Length: {length}")
 
