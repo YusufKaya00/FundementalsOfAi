@@ -203,9 +203,26 @@ class NumberGameGUI:
             if self.game_state is None:
                 self.root.destroy()
             return
-
+        player_id = simpledialog.askinteger(
+            "Who starts the game",
+            "Enter who starts the game (2 - You, 1 - AI):",
+            minvalue=1, maxvalue=2, parent=self.root,
+        )
+        if player_id is None:
+            if self.game_state is None:
+                self.root.destroy()
+            return
+        algo_type = simpledialog.askinteger(
+            "Choose the algorithm",
+            "Enter the algorithm type (0 - Minimax, 1 - Alpha-Beta Pruning):",
+            minvalue=0, maxvalue=1, parent=self.root,
+        )
+        if algo_type is None:
+            if self.game_state is None:
+                self.root.destroy()
+            return
         self.game_state = gs.GameState(length=length)
-        self.ai_agent = AI.AI_Agent(player_id=2, depth_limit=4)
+        self.ai_agent = AI.AI_Agent(player_id=player_id, algo_type=algo_type, depth_limit=4)
         self.refresh_ui()
 
     def refresh_ui(self):
