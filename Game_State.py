@@ -89,10 +89,12 @@ class GameState:
                     node['children'].append(child_node)
 
             return node
+
         return build_tree(self, depth_limit)
 
+
 if __name__ == "__main__":
-    game = GameState(length=5)
+    game = GameState(length=5, current_player=1)
     print(f"Initial Board: {game.numbers}")
 
     print("Testing moves generation:")
