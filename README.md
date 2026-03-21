@@ -33,3 +33,13 @@ python3 number_game_gui.py
 ```bash
 python3 number_game_console.py
 ```
+
+### Project Structure
+```
+.
+├── AI_Agent.py
+├── Game_State.py
+├── number_game_gui.py
+├── number_game_console.py
+└── README.md
+```
