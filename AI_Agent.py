@@ -167,9 +167,9 @@ class AI_Agent:
         return final_score
 
 
-# Keeping the test block for debugging without GUI just in case to confirm logic works as expected.
-# In the final version, we can comment it out
+# Commented test block for debugging without GUI (just in case, to confirm logic works as expected).
 if __name__ == "__main__":
+    """""
     game = GameState(length=5, current_player=1)
     print(f"Initial Board: {game.numbers}")
     ai = AI_Agent(player_id=2, depth_limit=3, algo_type=1)
@@ -187,3 +187,22 @@ if __name__ == "__main__":
 
     print("\nExperiment Stats:")
     print(ai.get_experiment_stats())
+    """ ""
+
+    # Test Block to compare Minimax and Alpha-Beta pruning on the same game state for effective comparison
+
+    # 1. Setup a fixed game to ensure a fair comparison
+    test_numbers = [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3]  # Length 15
+    game = GameState(current_player=1, numbers=test_numbers)
+
+    # 2. Test Minimax
+    ai_minimax = AI_Agent(player_id=2, algo_type=0, depth_limit=4)
+    ai_minimax.get_best_move(game)
+    print("===Minimax Stats ===")
+    print(ai_minimax.get_experiment_stats())
+
+    # 3. Test Alpha-Beta
+    ai_ab = AI_Agent(player_id=2, algo_type=1, depth_limit=4)
+    ai_ab.get_best_move(game)
+    print("\n=== Alpha-Beta Stats ===")
+    print(ai_ab.get_experiment_stats())
