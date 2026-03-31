@@ -12,13 +12,11 @@ class GameState:
 
         self.scores = {1: 0, 2: 0}
         self.current_player = current_player
-        self.history = []
 
     def clone(self):
         new_state = GameState(numbers=copy.deepcopy(self.numbers), current_player=copy.deepcopy(self.current_player))
         new_state.scores = copy.deepcopy(self.scores)
         new_state.current_player = self.current_player
-        new_state.history = copy.deepcopy(self.history)
         return new_state
 
     def get_legal_moves(self):
