@@ -56,7 +56,8 @@ def play_console_game():
     game = gs.GameState(length=length, current_player=player_id)
     ai = AI.AI_Agent(player_id=2, algo_type=algo_type, depth_limit=4) # Depth can be adjusted
 
-    print(f"Game Started! Initial String Length: {length}")
+    print("Game started!")
+    print("Initial string length:", length)
 
     while not game.is_game_over():
         print_game_state(game)
@@ -64,18 +65,20 @@ def play_console_game():
         if game.current_player == 1:
             move = get_human_move(game)
             game.apply_move(move)
-            print(f"\nHuman chose: {move}")
+            print(f"\nYou chose: {move}")
         else:
             print("\nAI is thinking...")
             start_time = time.time()
             move = ai.get_best_move(game)
-            elapsed = time.time() - start_time
             game.apply_move(move)
-            print(f"AI chose: {move} (took {elapsed:.2f}s)")
+            ai_time = time.time() - start_time
+
+            print("AI move:", move)
+            print("Time:", round(ai_time, 2), "seconds")
 
     print("\n" + "#"*40)
     print("GAME OVER!")
-    print(f"Final Scores -> Human: {game.scores[1]} | AI: {game.scores[2]}")
+    print(f"Final Scores -> You: {game.scores[1]} | AI: {game.scores[2]}")
     winner = game.get_winner()
     if winner == 1:
         print("YOU WON!")
