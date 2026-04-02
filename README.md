@@ -1,15 +1,17 @@
 # Number String Game
 ## Fundamentals of Artificial Intelligence Practical Assignment 1 (DE0283)
+    
 A turn-based number string game with a Minimax and Alpha-Beta Pruning AI, built with Python and tkinter.
 
-### Participants
-| Name | File |
+### Team 15
+| Participant | File |
 |---|---|
 | Ayma Rehman | AI_Agent.py |
 | Alex | Game_State.py |
 | Efe | number_game_gui.py |
 | Yusuf Kaya | number_game_console.py |
 | Cagdas | number_game_console.py |
+
 
 ### Tech Stack
 | Library | Purpose |
